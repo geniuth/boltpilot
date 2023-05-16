@@ -11,7 +11,7 @@ jobs:
       - uses: actions-cool/issues-helper@v3
         if: contains(github.event.comment.body, '/user-review')
         with:
-          actions: 'set-labels'
+          actions: 'add-labels'
           token: ${{ secrets.GITHUB_TOKEN }}
           issue-number: ${{ github.event.issue.number }}
           labels: 'user-review-needed/사용자리뷰-요청'
