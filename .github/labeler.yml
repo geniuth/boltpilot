@@ -1,0 +1,13 @@
+custom:
+  - location: title
+    keywords:
+      - 'apilot'
+    labels:
+      - apilot
+  - location: body
+    keywords:
+      - '/user-review'
+    labels:
+      - /user-review
+
+
