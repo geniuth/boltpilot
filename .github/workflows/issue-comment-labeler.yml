@@ -14,4 +14,4 @@ jobs:
           actions: 'set-labels'
           token: ${{ secrets.GITHUB_TOKEN }}
           issue-number: ${{ github.event.issue.number }}
-          labels: 'xx'
+          labels: 'user-review-needed/사용자리뷰-요청'
