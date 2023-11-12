@@ -199,10 +199,17 @@ class CarController:
           #정속도 구간별 acc가 '0'일 때, 페달값 정의
           #예시 accGain3 = interp(actuators.accel, [-3.5,0,0 2], [0.1667,??, 0.1325])
           accGain = 0.1429
-          accGain3 = interp(actuators.accel, [-3.5, 2], [0.185, 0.130])
-          accGain10 = interp(actuators.accel, [-3.5, 2], [0.245, 0.185])
-          accGain15 = interp(actuators.accel, [-3.5, 2], [0.25, 0.215])
-          zero = interp(CS.out.vEgo,[0., 3, 10, 15, 30], [0, accGain3, accGain10, accGain15, 0.280])
+
+          # accGain3 = interp(actuators.accel, [-3.5, 2], [0.185, 0.130])
+          # accGain10 = interp(actuators.accel, [-3.5, 2], [0.245, 0.185])
+          # accGain15 = interp(actuators.accel, [-3.5, 2], [0.25, 0.215])
+          # zero = interp(CS.out.vEgo,[0., 3, 10, 15, 30], [0, accGain3, accGain10, accGain15, 0.280])
+
+          DecelZero = interp(CS.out.vEgo,[0., 3, 10, 15, 30], [0, 0.185, 0.245, 0.25, 0.280])
+          AccelZero = interp(CS.out.vEgo,[0., 3, 10, 15, 30], [0, 0.130, 0.185, 0.215, 0.280])
+          ZeroRatio = interp(actuators.accel, [-3.5, 2], [1.0, 0.0])
+          zero = DecelZero * ZeroRatio + AccelZero * (1-ZeroRatio)
+
           pedal_gas = clip((zero + actuators.accel * accGain), 0.0, 1.0)
 
           self.pedalGasRaw_valueStore = pedal_gas
