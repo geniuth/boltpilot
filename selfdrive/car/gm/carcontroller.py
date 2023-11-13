@@ -191,20 +191,10 @@ class CarController:
 
           self.pedal_gas_max = interp(CS.out.vEgo, [0.0, 5, 30], [0.20, 0.3275,  0.3725])
 
-          # if actuators.accel > 0.:
-          #   accGain = interp(CS.out.vEgo, [0., 5], [0.23, 0.130])
-          # else:
-          #   accGain = interp(CS.out.vEgo, [0., 5], [0.23, 0.165])
-          #TODO
-          #정속도 구간별 acc가 '0'일 때, 페달값 정의
-          #예시 accGain3 = interp(actuators.accel, [-3.5,0,0 2], [0.1667,??, 0.1325])
-          accGain = 0.1429
+          accGain = 0.1429  #This value is the result of testing by several users.
 
-          # accGain3 = interp(actuators.accel, [-3.5, 2], [0.185, 0.130])
-          # accGain10 = interp(actuators.accel, [-3.5, 2], [0.245, 0.185])
-          # accGain15 = interp(actuators.accel, [-3.5, 2], [0.25, 0.215])
-          # zero = interp(CS.out.vEgo,[0., 3, 10, 15, 30], [0, accGain3, accGain10, accGain15, 0.280])
-
+          # DesiredLateralAccel and ActualLateralAccel values were compared and tuned using plotjuggler, and tuned to almost match.
+          # In the old Bolt L mode equipped with a comma pedal, the intensity of acceleration and deceleration states were different, so they were tuned separately.
           DecelZero = interp(CS.out.vEgo,[0., 3, 10, 15, 30], [0, 0.185, 0.245, 0.25, 0.280])
           AccelZero = interp(CS.out.vEgo,[0., 3, 10, 15, 30], [0, 0.130, 0.185, 0.215, 0.280])
           ZeroRatio = interp(actuators.accel, [-3.5, 2], [1.0, 0.0])
