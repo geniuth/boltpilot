@@ -52,6 +52,9 @@ class CarController:
   def calc_pedal_command(accel: float, long_active: bool) -> float:
     if not long_active: return 0.
 
+    #To Do 
+    #Pedal Formula re_struct
+
     zero = 0.15625  # 40/256
     if accel > 0.:
       # Scales the accel from 0-1 to 0.156-1
