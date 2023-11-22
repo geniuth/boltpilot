@@ -49,7 +49,7 @@ class CarController:
     self.use_ev_tables = params.get_bool("EVTable")
 
   @staticmethod
-  def calc_pedal_command(accel: float, long_active: bool) -> float:
+  def calc_pedal_command(accel: float, long_active: bool, Car_velocity) -> float:
     if not long_active: return 0.
 
     #To Do 
@@ -58,8 +58,8 @@ class CarController:
 
     # DesiredLateralAccel and ActualLateralAccel values were compared and tuned using plotjuggler, and tuned to almost match.
     # In the old Bolt L mode equipped with a comma pedal, the intensity of acceleration and deceleration states were different, so they were tuned separately.
-    DecelZero = interp(CS.out.vEgo, [0., 3, 10, 15, 30], [0, 0.185, 0.245, 0.25, 0.280])
-    AccelZero = interp(CS.out.vEgo, [0., 3, 10, 15, 30], [0, 0.130, 0.185, 0.215, 0.280])
+    DecelZero = interp(Car_velocity, [0., 3, 10, 15, 30], [0, 0.185, 0.245, 0.25, 0.280])
+    AccelZero = interp(Car_velocity, [0., 3, 10, 15, 30], [0, 0.130, 0.185, 0.215, 0.280])
     ZeroRatio = interp(accel, [-3.5, 2], [1.0, 0.0])
     zero = DecelZero * ZeroRatio + AccelZero * (1 - ZeroRatio)
 
@@ -149,7 +149,7 @@ class CarController:
             self.apply_gas = self.params.INACTIVE_REGEN
           if self.CP.carFingerprint in CC_ONLY_CAR:
             # gas interceptor only used for full long control on cars without ACC
-            interceptor_gas_cmd = self.calc_pedal_command(actuators.accel, CC.longActive)
+            interceptor_gas_cmd = self.calc_pedal_command(actuators.accel, CC.longActive, CS.out.vEgo)
 
         if CC.cruiseControl.resume and actuators.longControlState == LongCtrlState.starting:
           interceptor_gas_cmd = self.params.SNG_INTERCEPTOR_GAS
