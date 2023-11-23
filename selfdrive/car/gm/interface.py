@@ -103,8 +103,8 @@ class CarInterface(CarInterfaceBase):
       ret.minSteerSpeed = 10 * CV.KPH_TO_MS
 
       # Tuning for experimental long
-      ret.longitudinalTuning.kpV = [2.0, 1.5]
-      ret.longitudinalTuning.kiV = [0.72]
+      ret.longitudinalTuning.kpV = [1.0, 1.0]
+      ret.longitudinalTuning.kiV = [0.0]
       ret.stoppingDecelRate = 2.0  # reach brake quickly after enabling
       ret.vEgoStopping = 0.25
       ret.vEgoStarting = 0.25
@@ -312,9 +312,9 @@ class CarInterface(CarInterfaceBase):
         ret.flags |= GMFlags.PEDAL_LONG.value
         # Note: Low speed, stop and go not tested. Should be fairly smooth on highway
         ret.longitudinalTuning.kpBP = [5., 35.]
-        ret.longitudinalTuning.kpV = [0.35, 0.5]
+        ret.longitudinalTuning.kpV = [1.0, 1.0]
         ret.longitudinalTuning.kiBP = [0., 35.0]
-        ret.longitudinalTuning.kiV = [0.1, 0.1]
+        ret.longitudinalTuning.kiV = [0.0, 0.0]
         ret.longitudinalTuning.kf = 0.15
         ret.stoppingDecelRate = 0.8
       else:  # Pedal used for SNG, ACC for longitudinal control otherwise
