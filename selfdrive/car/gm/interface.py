@@ -17,17 +17,13 @@ def get_steer_feedforward_sigmoid(desired_angle, v_ego, ANGLE, ANGLE_OFFSET, SIG
   sigmoid = x / (1 + fabs(x))
   return (SIGMOID_SPEED * sigmoid * v_ego) + (SIGMOID * sigmoid) + (SPEED * v_ego)
 
-
-
 class CarInterface(CarInterfaceBase):
   def __init__(self, CP, CarController, CarState):
     super().__init__(CP, CarController, CarState)
     self.keep_Lat_When_Brake = Params().get_bool('KeepLatWhenBrake')
 
-
   def _update(self, c: car.CarControl) -> car.CarState:
     pass
-
 
   @staticmethod
   def get_pid_accel_limits(CP, current_speed, cruise_speed):
@@ -57,7 +53,6 @@ class CarInterface(CarInterfaceBase):
     SIGMOID = 0.34485246691603205
     SPEED = -0.0010645479469461995
     return get_steer_feedforward_sigmoid(desired_angle, v_ego, ANGLE, ANGLE_OFFSET, SIGMOID_SPEED, SIGMOID, SPEED)
-
 
   def get_steer_feedforward_function(self):
       return self.get_steer_feedforward_bolt
@@ -91,8 +86,6 @@ class CarInterface(CarInterfaceBase):
     ret.enableGasInterceptor = Params().get_bool('CommaPedal')
     ret.restartForceAccel = Params().get_bool('RestartForceAccel')
     ret.openpilotLongitudinalControl = ret.enableGasInterceptor
-
-
 
     tire_stiffness_factor = 0.5
 
@@ -131,7 +124,6 @@ class CarInterface(CarInterfaceBase):
       ret.lateralTuning.lqr.c = [1., 0.]
       ret.lateralTuning.lqr.k = [-110.73572306, 451.22718255]
       ret.lateralTuning.lqr.l = [0.3233671, 0.3185757]
-      
       
     elif lateral_control == 'PID':
       ret.lateralTuning.init('pid')
@@ -175,10 +167,10 @@ class CarInterface(CarInterfaceBase):
                                                                          tire_stiffness_factor=tire_stiffness_factor)
 
     # longitudinal
-    ret.longitudinalTuning.kpBP = [0.]
-    ret.longitudinalTuning.kpV = [1.0]
-    ret.longitudinalTuning.kiBP = [0.]
-    ret.longitudinalTuning.kiV = [0.]
+    ret.longitudinalTuning.kpBP = [5., 35.]
+    ret.longitudinalTuning.kpV = [0.35, 0.5]
+    ret.longitudinalTuning.kiBP = [0., 35.0]
+    ret.longitudinalTuning.kiV = [0.1, 0.1]
     
     ret.longitudinalTuning.deadzoneBP = [0., 30.*CV.KPH_TO_MS]
     ret.longitudinalTuning.deadzoneV = [0., 0.10]
@@ -187,8 +179,8 @@ class CarInterface(CarInterfaceBase):
     
     ret.stopAccel = 0.
     ret.stoppingDecelRate = 0.8
-    ret.vEgoStopping = 0.5
-    ret.vEgoStarting = 0.5
+    ret.vEgoStopping = 0.25
+    ret.vEgoStarting = 0.25
     ret.stoppingControl = True
     
     ret.steerLimitTimer = 0.4
