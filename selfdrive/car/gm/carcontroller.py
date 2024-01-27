@@ -39,6 +39,7 @@ class CarController:
     self.last_button_frame = 0
     self.cancel_counter = 0
     self.pedal_steady = 0.
+    self.pedal_gas = 0.
 
     self.lka_steering_cmd_counter = 0
     self.lka_icon_status_last = (False, False)
@@ -67,7 +68,7 @@ class CarController:
     if accel > 0:
       pedaloffset = interp(car_velocity, [0., 3, 6, 30], [0.0, 0.180, 0.22, 0.280])
     else:
-      pedaloffset = interp(car_velocity, [0., 3, 6, 30], [0.15, 0.180, 0.22, 0.280])
+      pedaloffset = interp(car_velocity, [0., 3, 6, 30], [0.08, 0.180, 0.22, 0.280])
     pedal_gas = clip((pedaloffset + accel), 0.0, 1.0)
 
     return pedal_gas
@@ -161,6 +162,7 @@ class CarController:
           if self.CP.carFingerprint in CC_ONLY_CAR:
             # gas interceptor only used for full long control on cars without ACC
             interceptor_gas_cmd = self.calc_pedal_command(actuators.accel, CC.longActive, CS.out.vEgo)
+            actuators.commaPedal = interceptor_gas_cmd
 
         if CC.cruiseControl.resume and actuators.longControlState == LongCtrlState.starting:
           interceptor_gas_cmd = self.params.SNG_INTERCEPTOR_GAS

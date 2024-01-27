@@ -1419,6 +1419,7 @@ void AnnotatedCameraWidget::drawLeadInfo(QPainter &p) {
   // Update acceleration
   const double currentAcceleration = std::round(sm["carState"].getCarState().getAEgo() * 100) / 100;
   const double actuatorsAccel = sm["carControl"].getCarControl().getActuators().getAccel();
+  const double commaPedal = sm["carControl"].getCarControl().getActuators().getCommaPedal();
   static double maxAcceleration = 0.0;
 
   if (currentAcceleration > maxAcceleration && status == STATUS_ENGAGED) {
@@ -1436,6 +1437,8 @@ void AnnotatedCameraWidget::drawLeadInfo(QPainter &p) {
 
   // Create segments for insights
   const QString accelText = QString("Accel: %1")
+    .arg(actuatorsAccel , 0, 'f', 3);
+  const QString commaPedal = QString("Accel: %1")
     .arg(actuatorsAccel , 0, 'f', 3);
 //  const QString accelText = QString("Accel: %1%2")
 //    .arg(currentAcceleration * speedConversion, 0, 'f', 2)
@@ -1469,6 +1472,7 @@ void AnnotatedCameraWidget::drawLeadInfo(QPainter &p) {
 
   // Calculate the entire text width to ensure perfect centering
   const int totalTextWidth = p.fontMetrics().horizontalAdvance(accelText)
+                           + p.fontMetrics().horizontalAdvance(commaPedal)
 //                           + p.fontMetrics().horizontalAdvance(maxAccSuffix)
                            + p.fontMetrics().horizontalAdvance(obstacleText)
                            + p.fontMetrics().horizontalAdvance(createDiffText(obstacleDistance, obstacleDistanceStock))
@@ -1485,6 +1489,7 @@ void AnnotatedCameraWidget::drawLeadInfo(QPainter &p) {
   };
 
   drawText(accelText, Qt::white);
+  drawText(commaPedal, Qt::white);
 //  drawText(maxAccSuffix, isFiveSecondsPassed ? Qt::white : Qt::red);
   drawText(obstacleText, Qt::white);
   drawText(createDiffText(obstacleDistance, obstacleDistanceStock), (obstacleDistance - obstacleDistanceStock) > 0 ? Qt::green : Qt::red);
