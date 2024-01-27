@@ -1438,7 +1438,7 @@ void AnnotatedCameraWidget::drawLeadInfo(QPainter &p) {
   // Create segments for insights
   const QString accelText = QString("Accel: %1")
     .arg(actuatorsAccel , 0, 'f', 3);
-  const QString commaPedal = QString("Accel: %1")
+  const QString commaPedal = QString("Pedal: %1")
     .arg(actuatorsAccel , 0, 'f', 3);
 //  const QString accelText = QString("Accel: %1%2")
 //    .arg(currentAcceleration * speedConversion, 0, 'f', 2)
