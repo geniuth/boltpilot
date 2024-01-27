@@ -1418,6 +1418,7 @@ void AnnotatedCameraWidget::drawLeadInfo(QPainter &p) {
 
   // Update acceleration
   const double currentAcceleration = std::round(sm["carState"].getCarState().getAEgo() * 100) / 100;
+  const double actuatorsAccel = sm["carControl"].getCarControl().getActuators().getAccel();
   static double maxAcceleration = 0.0;
 
   if (currentAcceleration > maxAcceleration && status == STATUS_ENGAGED) {
@@ -1434,13 +1435,15 @@ void AnnotatedCameraWidget::drawLeadInfo(QPainter &p) {
   };
 
   // Create segments for insights
-  const QString accelText = QString("Accel: %1%2")
-    .arg(currentAcceleration * speedConversion, 0, 'f', 2)
-    .arg(unit_a);
-
-  const QString maxAccSuffix = QString(mapOpen ? "" : " - Max: %1%2")
-    .arg(maxAcceleration * speedConversion, 0, 'f', 2)
-    .arg(unit_a);
+  const QString accelText = QString("Accel: %1")
+    .arg(actuatorsAccel , 0, 'f', 3);
+//  const QString accelText = QString("Accel: %1%2")
+//    .arg(currentAcceleration * speedConversion, 0, 'f', 2)
+//    .arg(unit_a);
+//
+//  const QString maxAccSuffix = QString(mapOpen ? "" : " - Max: %1%2")
+//    .arg(maxAcceleration * speedConversion, 0, 'f', 2)
+//    .arg(unit_a);
 
   const QString obstacleText = createText(mapOpen ? " | Obstacle: " : "  |  Obstacle Factor: ", obstacleDistance);
   const QString stopText = createText(mapOpen ? " - Stop: " : "  -  Stop Factor: ", stoppedEquivalence);
@@ -1466,7 +1469,7 @@ void AnnotatedCameraWidget::drawLeadInfo(QPainter &p) {
 
   // Calculate the entire text width to ensure perfect centering
   const int totalTextWidth = p.fontMetrics().horizontalAdvance(accelText)
-                           + p.fontMetrics().horizontalAdvance(maxAccSuffix)
+//                           + p.fontMetrics().horizontalAdvance(maxAccSuffix)
                            + p.fontMetrics().horizontalAdvance(obstacleText)
                            + p.fontMetrics().horizontalAdvance(createDiffText(obstacleDistance, obstacleDistanceStock))
                            + p.fontMetrics().horizontalAdvance(stopText)
@@ -1482,7 +1485,7 @@ void AnnotatedCameraWidget::drawLeadInfo(QPainter &p) {
   };
 
   drawText(accelText, Qt::white);
-  drawText(maxAccSuffix, isFiveSecondsPassed ? Qt::white : Qt::red);
+//  drawText(maxAccSuffix, isFiveSecondsPassed ? Qt::white : Qt::red);
   drawText(obstacleText, Qt::white);
   drawText(createDiffText(obstacleDistance, obstacleDistanceStock), (obstacleDistance - obstacleDistanceStock) > 0 ? Qt::green : Qt::red);
   drawText(stopText, Qt::white);
