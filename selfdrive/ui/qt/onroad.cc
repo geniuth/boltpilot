@@ -1438,7 +1438,7 @@ void AnnotatedCameraWidget::drawLeadInfo(QPainter &p) {
   // Create segments for insights
   const QString accelText = QString("Accel: %1")
     .arg(actuatorsAccel , 0, 'f', 3);
-  const QString commaPedal = QString(mapOpen ? "" : " Pedal: %1")
+  const QString pedalText = QString("| Pedal: %1")
     .arg(commaPedal , 0, 'f', 3);
 //  const QString accelText = QString("Accel: %1%2")
 //    .arg(currentAcceleration * speedConversion, 0, 'f', 2)
@@ -1472,7 +1472,7 @@ void AnnotatedCameraWidget::drawLeadInfo(QPainter &p) {
 
   // Calculate the entire text width to ensure perfect centering
   const int totalTextWidth = p.fontMetrics().horizontalAdvance(accelText)
-                           + p.fontMetrics().horizontalAdvance(commaPedal)
+                           + p.fontMetrics().horizontalAdvance(pedalText)
 //                           + p.fontMetrics().horizontalAdvance(maxAccSuffix)
                            + p.fontMetrics().horizontalAdvance(obstacleText)
                            + p.fontMetrics().horizontalAdvance(createDiffText(obstacleDistance, obstacleDistanceStock))
