@@ -1439,7 +1439,7 @@ void AnnotatedCameraWidget::drawLeadInfo(QPainter &p) {
   const QString accelText = QString("Accel: %1")
     .arg(actuatorsAccel , 0, 'f', 3)
     .arg(unit_a);
-  const QString pedalText = QString("||| Pedal: %1")
+  const QString pedalText = QString("| Pedal: %1")
     .arg(commaPedal , 0, 'f', 3)
     .arg(unit_a);
 //  const QString accelText = QString("Accel: %1%2")
