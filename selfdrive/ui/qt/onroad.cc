@@ -1491,7 +1491,7 @@ void AnnotatedCameraWidget::drawLeadInfo(QPainter &p) {
   };
 
   drawText(accelText, Qt::white);
-  drawText(commaPedal, Qt::white);
+  drawText(pedalText, Qt::white);
 //  drawText(maxAccSuffix, isFiveSecondsPassed ? Qt::white : Qt::red);
   drawText(obstacleText, Qt::white);
   drawText(createDiffText(obstacleDistance, obstacleDistanceStock), (obstacleDistance - obstacleDistanceStock) > 0 ? Qt::green : Qt::red);
