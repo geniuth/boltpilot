@@ -56,6 +56,7 @@ class CarController:
 
     self.pitch = FirstOrderFilter(0., 0.09 * 4, DT_CTRL * 4)  # runs at 25 Hz
     self.accel_g = 0.0
+    self.interceptor_gas_cmd = 0.0
 
   def update_frogpilot_variables(self, params):
     self.long_pitch = params.get_bool("LongPitch")
@@ -162,7 +163,6 @@ class CarController:
           if self.CP.carFingerprint in CC_ONLY_CAR:
             # gas interceptor only used for full long control on cars without ACC
             interceptor_gas_cmd = self.calc_pedal_command(actuators.accel, CC.longActive, CS.out.vEgo)
-            actuators.commaPedal = interceptor_gas_cmd
 
         if CC.cruiseControl.resume and actuators.longControlState == LongCtrlState.starting:
           interceptor_gas_cmd = self.params.SNG_INTERCEPTOR_GAS
@@ -176,6 +176,7 @@ class CarController:
             can_sends.extend(gmcan.create_gm_cc_spam_command(self.packer_pt, self, CS, actuators))
         if self.CP.enableGasInterceptor:
           can_sends.append(create_gas_interceptor_command(self.packer_pt, interceptor_gas_cmd, idx))
+          self.interceptor_gas_cmd = interceptor_gas_cmd
         if self.CP.carFingerprint not in CC_ONLY_CAR:
           friction_brake_bus = CanBus.CHASSIS
           # GM Camera exceptions
@@ -259,6 +260,7 @@ class CarController:
       can_sends.append(gmcan.create_lka_icon_command(CanBus.SW_GMLAN, lka_active, lka_critical, steer_alert))
       self.lka_icon_status_last = lka_icon_status
 
+    actuators.commaPedal = self.interceptor_gas_cmd
     new_actuators = actuators.copy()
     new_actuators.accel = accel
     new_actuators.steer = self.apply_steer_last / self.params.STEER_MAX
